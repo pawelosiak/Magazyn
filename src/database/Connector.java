@@ -33,6 +33,7 @@ public class Connector {
 
      public static DataSource connect() {
 
+
         String url = "jdbc:postgresql://localhost/postgres?user=&password=";
         String urlHost = "";
         PGSimpleDataSource conn = new PGSimpleDataSource();
