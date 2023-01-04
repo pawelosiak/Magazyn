@@ -13,7 +13,6 @@ import java.sql.Statement;
 import java.sql.PreparedStatement;
 import java.util.Vector;
 import javax.sql.DataSource;
-import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import org.postgresql.ds.PGSimpleDataSource;
 
@@ -34,7 +33,7 @@ public class Connector {
 
      public static DataSource connect() {
 
-        String url = "jdbc:postgresql://localhost/postgres?user=postgres&password=superuser";
+        String url = "jdbc:postgresql://localhost/postgres?user=&password=";
         String urlHost = "";
         PGSimpleDataSource conn = new PGSimpleDataSource();
 
