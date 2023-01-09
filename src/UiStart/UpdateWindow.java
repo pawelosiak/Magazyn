@@ -27,11 +27,13 @@ public class UpdateWindow extends javax.swing.JFrame {
 
         initComponents();
         
+       
         oemText.setText(tab[0]);
         partText.setText(tab[1]);
         prodText.setText(tab[2]);
         vehText.setText(tab[3]);
         quantText.setText(tab[4]);
+        descriptionText.setText(tab[5]);
         
         System.out.println(id);
         
@@ -60,6 +62,8 @@ public class UpdateWindow extends javax.swing.JFrame {
         quantText = new javax.swing.JTextField();
         updateBut = new javax.swing.JButton();
         endBut = new javax.swing.JButton();
+        jLabel7 = new javax.swing.JLabel();
+        descriptionText = new javax.swing.JTextField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Aktualizacja bazy danych ");
@@ -97,6 +101,14 @@ public class UpdateWindow extends javax.swing.JFrame {
             }
         });
 
+        jLabel7.setText("OPIS");
+
+        descriptionText.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                descriptionTextActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -111,19 +123,20 @@ public class UpdateWindow extends javax.swing.JFrame {
                             .addComponent(jLabel2)
                             .addComponent(jLabel4)
                             .addComponent(jLabel5)
-                            .addComponent(jLabel6))
+                            .addComponent(jLabel6)
+                            .addComponent(jLabel7))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addGroup(layout.createSequentialGroup()
                                 .addComponent(updateBut)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                                 .addComponent(endBut))
-                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                .addComponent(oemText)
-                                .addComponent(partText)
-                                .addComponent(prodText)
-                                .addComponent(vehText)
-                                .addComponent(quantText, javax.swing.GroupLayout.DEFAULT_SIZE, 256, Short.MAX_VALUE)))))
+                            .addComponent(oemText)
+                            .addComponent(partText)
+                            .addComponent(prodText)
+                            .addComponent(vehText)
+                            .addComponent(quantText, javax.swing.GroupLayout.DEFAULT_SIZE, 256, Short.MAX_VALUE)
+                            .addComponent(descriptionText))))
                 .addContainerGap(40, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
@@ -151,12 +164,18 @@ public class UpdateWindow extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel6)
                     .addComponent(quantText, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(30, 30, 30)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel7)
+                    .addComponent(descriptionText, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 31, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(updateBut)
                     .addComponent(endBut))
-                .addContainerGap(50, Short.MAX_VALUE))
+                .addGap(15, 15, 15))
         );
+
+        descriptionText.getAccessibleContext().setAccessibleName("descrption");
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
@@ -186,10 +205,15 @@ public class UpdateWindow extends javax.swing.JFrame {
         String valProd = prodText.getText();
         String valVeh = vehText.getText();
         String valQuant = quantText.getText();
+        String valDescr = descriptionText.getText();
         
-        Connector.updateQuerry(id, valOem, valPart, valProd, valVeh, valQuant);
+        Connector.updateQuerry(id, valOem, valPart, valProd, valVeh, valQuant, valDescr);
         JOptionPane.showMessageDialog(this, "Zaktualizowano rekord w bazie danych.");
     }//GEN-LAST:event_updateButActionPerformed
+
+    private void descriptionTextActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_descriptionTextActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_descriptionTextActionPerformed
 
     /**
      * @param args the command line arguments
@@ -227,6 +251,7 @@ public class UpdateWindow extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    public static javax.swing.JTextField descriptionText;
     private javax.swing.JButton endBut;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
@@ -234,6 +259,7 @@ public class UpdateWindow extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
+    private javax.swing.JLabel jLabel7;
     public static javax.swing.JTextField oemText;
     public static javax.swing.JTextField partText;
     public static javax.swing.JTextField prodText;

@@ -80,12 +80,12 @@ public class Init {
             win = new MainWindow();
             win.setVisible(true);
             
-            
-            
+           
+            /*
             Check chk = new Check();
             chk.start();
             chk.setDaemon(chk.isAlive());
-            
+            */
     }
     }
 
@@ -124,11 +124,11 @@ public class Init {
         Ui app = new Ui();
        
         
-        db.run();
+        db.start();
         db.isDaemon();
         
         app.checkAccess();
-        app.run();
+        app.start();
         
         
     }

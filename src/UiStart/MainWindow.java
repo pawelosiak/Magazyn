@@ -46,6 +46,7 @@ public class MainWindow extends javax.swing.JFrame {
     public MainWindow() {
 
         this.setTitle("MAGAZYN CZĘŚCI");
+        this.setResizable(true);
         initComponents();
 
         int rows = tabmod.getRowCount();
@@ -54,9 +55,10 @@ public class MainWindow extends javax.swing.JFrame {
             
            JOptionPane.showMessageDialog(this, "Oczekuję na połączenie z bazą danych.");
         } 
-        
+       
         //tabmod.addRow(Connector.result());
         resultTable.setModel(tabmod);
+        
     }
 
     /**
@@ -76,8 +78,7 @@ public class MainWindow extends javax.swing.JFrame {
         searchButton1 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setMinimumSize(new java.awt.Dimension(800, 600));
-        setResizable(false);
+        setMinimumSize(new java.awt.Dimension(1366, 600));
         addWindowListener(new java.awt.event.WindowAdapter() {
             public void windowClosing(java.awt.event.WindowEvent evt) {
                 formWindowClosing(evt);
@@ -142,7 +143,7 @@ public class MainWindow extends javax.swing.JFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(tablePanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(tablePanel, javax.swing.GroupLayout.DEFAULT_SIZE, 679, Short.MAX_VALUE)
                 .addContainerGap())
             .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );

@@ -18,6 +18,7 @@ public class AddWindow extends javax.swing.JFrame {
     /**
      * Creates new form AddWindow
      */
+    
     public AddWindow() {
         initComponents();
     }
@@ -43,6 +44,8 @@ public class AddWindow extends javax.swing.JFrame {
         quant = new javax.swing.JTextField();
         add = new javax.swing.JButton();
         end = new javax.swing.JButton();
+        jLabel6 = new javax.swing.JLabel();
+        descriptText = new javax.swing.JTextField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("DODAWANIE CZĘŚCI DO MAGAZYNU");
@@ -76,18 +79,24 @@ public class AddWindow extends javax.swing.JFrame {
             }
         });
 
+        jLabel6.setText("OPIS");
+
+        descriptText.setText("Pasujące modele aut: ");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jLabel3, javax.swing.GroupLayout.DEFAULT_SIZE, 97, Short.MAX_VALUE)
-                    .addComponent(jLabel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jLabel5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                        .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(jLabel3, javax.swing.GroupLayout.DEFAULT_SIZE, 97, Short.MAX_VALUE)
+                        .addComponent(jLabel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(jLabel5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(jLabel6))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(oem)
@@ -99,7 +108,8 @@ public class AddWindow extends javax.swing.JFrame {
                         .addComponent(add)
                         .addGap(18, 18, 18)
                         .addComponent(end)
-                        .addGap(0, 123, Short.MAX_VALUE)))
+                        .addGap(0, 123, Short.MAX_VALUE))
+                    .addComponent(descriptText))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -125,7 +135,11 @@ public class AddWindow extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel5)
                     .addComponent(quant, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 79, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel6)
+                    .addComponent(descriptText, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 45, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(add)
                     .addComponent(end))
@@ -138,7 +152,7 @@ public class AddWindow extends javax.swing.JFrame {
     private void addActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addActionPerformed
         try {
             // TODO add your handling code here:
-            Connector.insert(oem.getText(), part.getText(), prod.getText(), veh.getText(), Integer.parseInt(quant.getText()));
+            Connector.insert(oem.getText(), part.getText(), prod.getText(), veh.getText(), Integer.parseInt(quant.getText()), descriptText.getText());
         } catch (SQLException ex) {
             System.out.println(ex.getMessage());
         }
@@ -149,6 +163,7 @@ public class AddWindow extends javax.swing.JFrame {
         prod.setText("");
         veh.setText("");
         quant.setText("");
+        descriptText.setText("Pasujące modele aut: ");
     }//GEN-LAST:event_addActionPerformed
 
     private void endActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_endActionPerformed
@@ -203,12 +218,14 @@ public class AddWindow extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton add;
+    public static javax.swing.JTextField descriptText;
     private javax.swing.JButton end;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
+    private javax.swing.JLabel jLabel6;
     private javax.swing.JTextField oem;
     private javax.swing.JTextField part;
     private javax.swing.JTextField prod;
