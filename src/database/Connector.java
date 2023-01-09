@@ -84,6 +84,7 @@ public class Connector {
          String val5 = "quantity";
          String val6 = "descript";
          
+         
          String sql = "SELECT oem, part, producer, vehicle, quantity, descript FROM warehouse.s_out() ORDER BY partid ASC";
          
          try{
@@ -114,7 +115,9 @@ public class Connector {
          }catch(SQLException ex){
          ex.getMessage();
          }
-         MainWindow.setTableModel(tab);
+             
+             MainWindow.setTableModel(tab);
+
      }
 
     public static void update(){
@@ -157,6 +160,7 @@ public class Connector {
          }catch(SQLException ex){
          ex.getMessage();
          }
+         
          MainWindow.setTableModel(tabUp);
      }
 
