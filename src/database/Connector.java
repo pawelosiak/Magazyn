@@ -26,7 +26,7 @@ import org.postgresql.ds.PGSimpleDataSource;
 public class Connector {
 
         public static int rows = 0;
-        public static DefaultTableModel tab = new DefaultTableModel(new String[]{"OEM", "CZĘŚĆ", "PRODUCENT", "POJAZD", "ILOŚĆ"}, 0);
+        public static DefaultTableModel tab = new DefaultTableModel(new String[]{"OEM", "CZĘŚĆ", "PRODUCENT", "POJAZD", "ILOŚĆ", "OPIS"}, 0);
         public static int partid;
         public static boolean iHave = false;
 
@@ -57,16 +57,17 @@ public class Connector {
 
      }
 
-     public static void insert(String oem, String part, String prod, String veh, int quant)throws SQLException {
+     public static void insert(String oem, String part, String prod, String veh, int quant, String descr)throws SQLException {
 
          Connection con = connect().getConnection();
-         String sql = "INSERT INTO warehouse.parts(oem, part, producer, vehicle, quantity) VALUES (?, ?, ?, ?, ?);";
+         String sql = "INSERT INTO warehouse.parts(oem, part, producer, vehicle, quantity, descript) VALUES (?, ?, ?, ?, ?, ?);";
          PreparedStatement stateins = con.prepareStatement(sql);
          stateins.setString(1, oem);
          stateins.setString(2, part);
          stateins.setString(3, prod);
          stateins.setString(4, veh);
          stateins.setInt(5,quant);
+         stateins.setString(6, descr);
          stateins.executeUpdate();
          stateins.close();
          con.close();
@@ -81,8 +82,9 @@ public class Connector {
          String val3 = "producer";
          String val4 = "vehicle";
          String val5 = "quantity";
+         String val6 = "descript";
          
-         String sql = "SELECT oem, part, producer, vehicle, quantity FROM warehouse.s_out() ORDER BY partid ASC";
+         String sql = "SELECT oem, part, producer, vehicle, quantity, descript FROM warehouse.s_out() ORDER BY partid ASC";
          
          try{
          Connection con = connect().getConnection();
@@ -96,6 +98,7 @@ public class Connector {
              vecRes.add(result.getString(val3));
              vecRes.add(result.getString(val4));
              vecRes.add(result.getString(val5));
+             vecRes.add(result.getString(val6));
              tab.addRow(vecRes);
 
              rows = rows+1;
@@ -116,14 +119,15 @@ public class Connector {
 
     public static void update(){
 
-         DefaultTableModel tabUp = new DefaultTableModel(new String[]{"OEM", "CZĘŚĆ", "PRODUCENT", "POJAZD", "ILOŚĆ"}, 0);
+         DefaultTableModel tabUp = new DefaultTableModel(new String[]{"OEM", "CZĘŚĆ", "PRODUCENT", "POJAZD", "ILOŚĆ", "OPIS"}, 0);
       String val1 = "oem";
          String val2 = "part";
          String val3 = "producer";
          String val4 = "vehicle";
          String val5 = "quantity";
+         String val6 = "descript";
          
-         String sql = "SELECT oem, part, producer, vehicle, quantity FROM warehouse.s_out() ORDER BY partid ASC";
+         String sql = "SELECT oem, part, producer, vehicle, quantity, descript FROM warehouse.s_out() ORDER BY partid ASC";
          
          try{
          Connection con = connect().getConnection();
@@ -137,6 +141,7 @@ public class Connector {
              vecRes.add(result.getString(val3));
              vecRes.add(result.getString(val4));
              vecRes.add(result.getString(val5));
+             vecRes.add(result.getString(val6));
              tabUp.addRow(vecRes);
 
              rows = rows+1;
@@ -178,14 +183,14 @@ public class Connector {
 
              System.out.println(partid);
 
-             //getData(rs);
-
-             //System.out.println(vec.toString());
-             //SearchWindow.resultArea.cut();
+             for(int i=0; i<getData(rs).size(); i++){
              
-             //SearchWindow.resultArea.repaint();
-             SearchWindow.resultArea.setText(getData(rs).toString());
-             System.out.println(getData(rs).toString());
+             SearchWindow.resultArea.append(getData(rs).elementAt(i)+"\n");
+             }
+             for(int i=0; i<getData(rs).size(); i++){
+             System.out.println(getData(rs).elementAt(i));
+             }
+             
              iHave = true;
 
          }
@@ -202,10 +207,10 @@ public class Connector {
         
      }
 
-     public static void updateQuerry(int id, String oem, String part, String prod, String veh, String quant){
+     public static void updateQuerry(int id, String oem, String part, String prod, String veh, String quant, String descr){
 
 
-         String sql = "UPDATE warehouse.parts SET oem=?, part=?, producer=?, vehicle=?, quantity=? WHERE partid=?";
+         String sql = "UPDATE warehouse.parts SET oem=?, part=?, producer=?, vehicle=?, quantity=?, descript=? WHERE partid=?";
 
 
          Connection con;
@@ -217,7 +222,8 @@ public class Connector {
          stt.setString(3, prod);
          stt.setString(4, veh);
          stt.setInt(5, Integer.parseInt(quant));
-         stt.setInt(6, id);
+         stt.setString(6, descr);
+         stt.setInt(7, id);
 
          ResultSet rs = stt.executeQuery();
 
@@ -240,12 +246,13 @@ public class Connector {
      public static Vector<String> getData(ResultSet get) throws SQLException{
 
          Vector <String> vec = new Vector<String>();
-             vec.add("NR OEM: "+get.getString("oem"));
-             vec.add("CZĘŚĆ: "+get.getString("part"));
-             vec.add("PRODUCENT: "+get.getString("producer"));
-             vec.add("POJAZD: "+get.getString("vehicle"));
-             vec.add("ILOŚĆ: "+get.getString("quantity"));
-
+             vec.add(0,"NR OEM: "+get.getString("oem"));
+             vec.add(1,"CZĘŚĆ: "+get.getString("part"));
+             vec.add(2,"PRODUCENT: "+get.getString("producer"));
+             vec.add(3,"POJAZD: "+get.getString("vehicle"));
+             vec.add(4,"ILOŚĆ: "+get.getString("quantity"));
+             vec.add(5,get.getString("descript"));
+             
          return vec;
      }
 
@@ -253,7 +260,7 @@ public class Connector {
 
 
          System.out.println("Mamy takie id z bazy: "+partid);
-         String [] partsTab={null,null,null,null,null};
+         String [] partsTab={null,null,null,null,null, null};
          String sql= "SELECT * FROM warehouse.parts WHERE warehouse.parts.partid=? ";
          Connection con;
 
@@ -275,7 +282,7 @@ public class Connector {
              partsTab[2]=rs.getString("producer");
              partsTab[3]=rs.getString("vehicle");
              partsTab[4]=rs.getString("quantity");
-
+             partsTab[5]=rs.getString("descript");
 
              System.out.println(partsTab[2]);
 
