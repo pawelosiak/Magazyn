@@ -3,6 +3,8 @@ package UiStart;
 import database.Connector;
 import java.sql.SQLException;
 import java.io.*;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 
 
@@ -24,6 +26,7 @@ public class Init {
     static boolean testCon = true;
     
     static class Database extends Thread{
+        @Override
     public synchronized void run(){
         
         try {
@@ -44,18 +47,18 @@ public class Init {
             // kick them off
             errorGobbler.start();
             outputGobbler.start();
-
+            
             // any error???
             int exitVal = proc.waitFor();
+            
             System.out.println("ExitValue: " + exitVal);
-            
-            
-
+ 
         } catch (Throwable t) {
 
             t.printStackTrace();
         }
-    
+
+        
     }
     }
     
@@ -73,14 +76,14 @@ public class Init {
     }
     }
     static class Ui extends Thread{
-    @Override
+    
+        @Override
     public synchronized void run(){
 
-            Connector.result();
-            win = new MainWindow();
-            win.setVisible(true);
-            
-           
+                Connector.result();
+                win = new MainWindow();
+                win.setVisible(true);
+
             /*
             Check chk = new Check();
             chk.start();
@@ -112,6 +115,7 @@ public class Init {
         //Connector.result();
         win = new MainWindow();
         win.setVisible(true);
+        
     }
 
     
@@ -124,11 +128,19 @@ public class Init {
         Ui app = new Ui();
        
         
+        
         db.start();
-        db.isDaemon();
         
         app.checkAccess();
         app.start();
+        
+        System.out.println("Stan wątku okna aplikacji: "+app.getState());
+        
+        
+           
+        
+        
+        
         
         
     }
