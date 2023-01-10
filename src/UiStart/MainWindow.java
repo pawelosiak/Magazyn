@@ -37,18 +37,20 @@ public class MainWindow extends javax.swing.JFrame {
         tabmod = model;
     }
 
+    public static DefaultTableModel getTableModel(){
+        
+    return tabmod;
+    }
     /**
      * Creates new form MainWindow
      */
     public static DefaultTableModel tabmod;
 
+    public MainWindow(DefaultTableModel model) {
 
-    
-    public MainWindow() {
-
+        this.tabmod = model;
         this.setTitle("MAGAZYN CZĘŚCI");
         this.setResizable(true);
-        initComponents();
 
         int rows = tabmod.getRowCount();
         
@@ -56,10 +58,27 @@ public class MainWindow extends javax.swing.JFrame {
             
            JOptionPane.showMessageDialog(this, "Oczekuję na połączenie z bazą danych.");
         } 
-       
-        //tabmod.addRow(Connector.result());
+
         resultTable.setModel(tabmod);
+        initComponents();
+    }
         
+    public MainWindow() {
+
+        
+        this.setTitle("MAGAZYN CZĘŚCI");
+        this.setResizable(true);
+         initComponents();
+        int rows = tabmod.getRowCount();
+         
+        if (rows < 1) {
+            
+           JOptionPane.showMessageDialog(this, "Oczekuję na połączenie z bazą danych.");
+        } 
+
+        resultTable.setModel(tabmod);
+        this.repaint();
+       
     }
 
     /**

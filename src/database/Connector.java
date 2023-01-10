@@ -26,9 +26,10 @@ import org.postgresql.ds.PGSimpleDataSource;
 public class Connector {
 
         public static int rows = 0;
-        public static DefaultTableModel tab = new DefaultTableModel(new String[]{"OEM", "CZĘŚĆ", "PRODUCENT", "POJAZD", "ILOŚĆ", "OPIS"}, 0);
+        
         public static int partid;
         public static boolean iHave = false;
+        public static MainWindow app; 
 
 
      public static DataSource connect() {
@@ -77,13 +78,13 @@ public class Connector {
 
      public static void result(){
 
+         DefaultTableModel tab = new DefaultTableModel(new String[]{"OEM", "CZĘŚĆ", "PRODUCENT", "POJAZD", "ILOŚĆ", "OPIS"}, 0);
          String val1 = "oem";
          String val2 = "part";
          String val3 = "producer";
          String val4 = "vehicle";
          String val5 = "quantity";
          String val6 = "descript";
-         
          
          String sql = "SELECT oem, part, producer, vehicle, quantity, descript FROM warehouse.s_out() ORDER BY partid ASC";
          
@@ -101,29 +102,28 @@ public class Connector {
              vecRes.add(result.getString(val5));
              vecRes.add(result.getString(val6));
              tab.addRow(vecRes);
-
+             
              rows = rows+1;
                 
          }
 
-         System.out.println(rows);
          result.close();
          state.close();
          con.close();
          rows=0;
-        
+
          }catch(SQLException ex){
          ex.getMessage();
          }
+            MainWindow.setTableModel(tab);
              
-             MainWindow.setTableModel(tab);
 
      }
 
     public static void update(){
 
          DefaultTableModel tabUp = new DefaultTableModel(new String[]{"OEM", "CZĘŚĆ", "PRODUCENT", "POJAZD", "ILOŚĆ", "OPIS"}, 0);
-      String val1 = "oem";
+         String val1 = "oem";
          String val2 = "part";
          String val3 = "producer";
          String val4 = "vehicle";

@@ -1,10 +1,11 @@
 package UiStart;
 
 import database.Connector;
-import java.sql.SQLException;
 import java.io.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 
 
 
@@ -17,52 +18,26 @@ import java.util.logging.Logger;
  *
  * @author pawel
  */
-public class Init {
+public abstract class Init implements Runnable{
 
     /**
      * @param args the command line arguments
      */
-    static MainWindow win;
-    static boolean testCon = true;
     
+    static boolean testCon = true;
+
     static class Database extends Thread{
         @Override
     public synchronized void run(){
-        
-        try {
-
-            String cmd = "powershell.exe Start-Process -FilePath ./START.bat -verb RunAs";
-            String [] com = {"net start postgresql-x64-14"};
-            Runtime rt = Runtime.getRuntime();
-            //Process proc1 = Runtime.getRuntime().exec("powershell.exe Start-Process -FilePath java.exe -Argument '-jar Magazyn.jar' -verb RunAs");
-            Process proc = rt.exec(cmd);
-            
-
-            // any error message?
-            StreamGobbler errorGobbler = new StreamGobbler(proc.getErrorStream(), "ERR");
-
-            // any output?
-            StreamGobbler outputGobbler = new StreamGobbler(proc.getInputStream(), "OUT");
-
-            // kick them off
-            errorGobbler.start();
-            outputGobbler.start();
-            
-            // any error???
-            int exitVal = proc.waitFor();
-            
-            System.out.println("ExitValue: " + exitVal);
- 
-        } catch (Throwable t) {
-
-            t.printStackTrace();
-        }
-
+        this.setPriority(1);
+        System.out.println("Jestem wątek bazy danych i działam");
+        this.isAlive();
+        Connector.result();
         
     }
     }
     
-    static class Check extends Thread{
+    /*static class Check extends Thread{
     public synchronized void run(){
     
         if (!win.getResultTable().isRowSelected(win.getResultTable().getSelectedRow())) {
@@ -74,16 +49,26 @@ public class Init {
             System.out.println("Zaznaczona linia" + win.getResultTable().getSelectedRow());
         }
     }
-    }
+    }*/
     static class Ui extends Thread{
     
-        @Override
+       
     public synchronized void run(){
 
-                Connector.result();
-                win = new MainWindow();
-                win.setVisible(true);
-
+        this.setPriority(2);
+        try {
+            this.wait(1500);
+        } catch (InterruptedException ex) {
+            System.out.println(ex.getMessage());
+        }
+        System.out.println("Jestem wątek okna i działam");
+                    Connector.result();
+                    MainWindow win = new MainWindow();
+                    win.setVisible(true);
+                    win.repaint();
+                
+               
+                
             /*
             Check chk = new Check();
             chk.start();
@@ -109,40 +94,66 @@ public class Init {
         }
     };
 
-    public static void init() {
-        // TODO code application logic here
-        
-        //Connector.result();
-        win = new MainWindow();
-        win.setVisible(true);
-        
+    public static int upDatabase(){
+        int exitVal=2;
+    try {
+
+            String cmd = "powershell.exe Start-Process -FilePath ./START.bat -verb RunAs";
+            String [] com = {"net start postgresql-x64-14"};
+            Runtime rt = Runtime.getRuntime();
+            //Process proc1 = Runtime.getRuntime().exec("powershell.exe Start-Process -FilePath java.exe -Argument '-jar Magazyn.jar' -verb RunAs");
+            Process proc = rt.exec(cmd);
+            
+
+            // any error message?
+            StreamGobbler errorGobbler = new StreamGobbler(proc.getErrorStream(), "ERR");
+
+            // any output?
+            StreamGobbler outputGobbler = new StreamGobbler(proc.getInputStream(), "OUT");
+
+            // kick them off
+            errorGobbler.start();
+            outputGobbler.start();
+            
+            // any error???
+            exitVal = proc.waitFor();
+            
+            System.out.println("ExitValue: " + exitVal);
+            
+ 
+        } catch (Throwable t) {
+
+            t.printStackTrace();
+        }
+        return exitVal;
+    }
+    public static synchronized void runApp(int procValue){
+        JFrame accessFrame = new JFrame();
+            if(procValue==1){
+            JOptionPane.showMessageDialog( accessFrame, JOptionPane.WARNING_MESSAGE+" Błąd bazy danych.");
+            System.exit(0);
+            }else if(procValue==0){
+            init();
+            }
+    }
+    public static synchronized void init(){
+       
+         
+        Database db = new Database();
+        Ui app = new Ui();
+
+           db.run();
+        if(!db.isAlive()){
+            app.run();
+        }
+
     }
 
     
     @SuppressWarnings("static-access")
-    public static void main(String[] args) {
+    public static synchronized void main(String[] args) {
 
-        // TODO code application logic here
-        
-        Database db = new Database();
-        Ui app = new Ui();
-       
-        
-        
-        db.start();
-        
-        app.checkAccess();
-        app.start();
-        
-        System.out.println("Stan wątku okna aplikacji: "+app.getState());
-        
-        
-           
-        
-        
-        
-        
-        
+        runApp(upDatabase());
     }
 
 }
