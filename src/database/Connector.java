@@ -186,7 +186,7 @@ public class Connector {
              getId(rs);
 
              System.out.println(partid);
-
+             SearchWindow.resultArea.setText("---------------------------------------"+"\n");
              for(int i=0; i<getData(rs).size(); i++){
              
              SearchWindow.resultArea.append(getData(rs).elementAt(i)+"\n");

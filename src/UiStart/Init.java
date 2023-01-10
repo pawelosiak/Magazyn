@@ -32,7 +32,7 @@ public abstract class Init implements Runnable{
         this.setPriority(1);
         System.out.println("Jestem wątek bazy danych i działam");
         this.isAlive();
-        Connector.result();
+        Connector.connect();
         
     }
     }
@@ -57,7 +57,7 @@ public abstract class Init implements Runnable{
 
         this.setPriority(2);
         try {
-            this.wait(1500);
+            this.wait(2000);
         } catch (InterruptedException ex) {
             System.out.println(ex.getMessage());
         }
@@ -65,7 +65,7 @@ public abstract class Init implements Runnable{
                     Connector.result();
                     MainWindow win = new MainWindow();
                     win.setVisible(true);
-                    win.repaint();
+                    
                 
                
                 
