@@ -26,12 +26,14 @@ import org.postgresql.ds.PGSimpleDataSource;
 public class Connector {
 
         public static int rows = 0;
-        
+        public static int iter = 0;
         public static int partid;
         public static boolean iHave = false;
         public static MainWindow app; 
 
-
+    public static int getIter(){
+        return iter;
+}
      public static DataSource connect() {
 
 
@@ -166,7 +168,7 @@ public class Connector {
 
      public static void search(String oemORpart, String vehicle){
 
-         String sql= "SELECT * FROM warehouse.parts WHERE warehouse.parts.oem LIKE ? AND warehouse.parts.vehicle LIKE ? OR warehouse.parts.part LIKE ? AND warehouse.parts.vehicle LIKE ?";
+         String sql= "SELECT * FROM warehouse.ex_select(?,?)";
          
          Connection con;
 
@@ -175,8 +177,7 @@ public class Connector {
          PreparedStatement stt1 = con.prepareStatement(sql);
          stt1.setString(1, oemORpart);
          stt1.setString(2, vehicle);
-         stt1.setString(3, oemORpart);
-         stt1.setString(4, vehicle);
+         
 
          ResultSet rs = stt1.executeQuery();
           System.out.println("Connection we have");
@@ -186,9 +187,9 @@ public class Connector {
              getId(rs);
 
              System.out.println(partid);
-             SearchWindow.resultArea.setText("---------------------------------------"+"\n");
-             for(int i=0; i<getData(rs).size(); i++){
              
+             for(int i=0; i<getData(rs).size(); i++){
+
              SearchWindow.resultArea.append(getData(rs).elementAt(i)+"\n");
              }
              for(int i=0; i<getData(rs).size(); i++){
@@ -256,7 +257,9 @@ public class Connector {
              vec.add(3,"POJAZD: "+get.getString("vehicle"));
              vec.add(4,"ILOŚĆ: "+get.getString("quantity"));
              vec.add(5,get.getString("descript"));
+             vec.add("------------------------------------------------");
              
+             iter = vecSize(vec);
          return vec;
      }
 
@@ -305,6 +308,10 @@ public class Connector {
          return partsTab;
      }
      
+     public static int vecSize(Vector<String> vector){
+     
+     return vector.size();
+     }
      
      }
 

@@ -153,9 +153,17 @@ public class SearchWindow extends javax.swing.JFrame {
     private void searchButtActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_searchButtActionPerformed
         
             // TODO add your handling code here:
-            resultArea.repaint();
+            int iter = 0;
+            resultArea.setText("");
             Connector.search(oemORpart.getText(), vehicle.getText());
+            iter = resultArea.getLineCount();
+            System.out.println("Wielkość wektora danych: "+resultArea.getLineCount());
+            if(iter>8){
+                updButt.setEnabled(false);}
+            else{
             updButt.setEnabled(true);
+            }
+            
             oemORpart.setText("");
             vehicle.setText("");
         
